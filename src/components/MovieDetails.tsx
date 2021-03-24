@@ -17,7 +17,14 @@ const MovieDetails: React.FC<Props> = ({ data }) => {
             data.id +
             "/external_ids?api_key=7ba1c2f1e41171dea1127d4aa8237c9d"
         ).then((r) => {
-          window.open("https://www.imdb.com/title/" + r.imdb_id + "/", "blank");
+          if (r.imdb_id) {
+            window.open(
+              "https://www.imdb.com/title/" + r.imdb_id + "/",
+              "_blank"
+            );
+          } else {
+            alert("cant find on imdb...");
+          }
           console.log(r);
         });
       }}
