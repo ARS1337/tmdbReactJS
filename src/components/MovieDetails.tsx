@@ -16,17 +16,21 @@ const MovieDetails: React.FC<Props> = ({ data }) => {
           "/movie/" +
             data.id +
             "/external_ids?api_key=7ba1c2f1e41171dea1127d4aa8237c9d"
-        ).then((r) => {
-          if (r.imdb_id) {
-            window.open(
-              "https://www.imdb.com/title/" + r.imdb_id + "/",
-              "_blank"
-            );
-          } else {
-            alert("Can't find " + data.original_title + " on IMDB...");
-          }
-          console.log(r);
-        });
+        )
+          .then((r) => {
+            if (r.imdb_id) {
+              window.open(
+                "https://www.imdb.com/title/" + r.imdb_id + "/",
+                "_blank"
+              );
+            } else {
+              alert("Can't find " + data.original_title + " on IMDB...");
+            }
+            console.log(r);
+          })
+          .catch((e) => {
+            alert("An error occured " + e);
+          });
       }}
     >
       <div className="title">{data.original_title}</div>
