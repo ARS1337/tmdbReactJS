@@ -23,7 +23,7 @@ const MovieDetails: React.FC<Props> = ({ data }) => {
               "_blank"
             );
           } else {
-            alert("cant find on imdb...");
+            alert("Can't find " + data.original_title + " on IMDB...");
           }
           console.log(r);
         });
