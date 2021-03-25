@@ -1,31 +1,35 @@
-import React from "react";
+import React, { useImperativeHandle } from "react";
 import { data } from "../utils/interfaces";
 
 interface Props {
   list: data[];
-  language: string;
-  date: string;
-  setLanguage: (text: string) => void;
-  setDate: (text: string) => void;
+  changeHandler: () => void;
+  clearFilter: () => void;
 }
 
-const FloatingFilter: React.FC<Props> = ({
-  list,
-  language,
-  date,
-  setLanguage,
-  setDate,
-}) => {
+const FloatingFilter = React.forwardRef<any, Props>((props, ref) => {
+  let dateRef: any = React.useRef<HTMLInputElement>(null);
+  let languageRef: any = React.useRef<HTMLInputElement>(null);
+
   let tempLanguage: string[] = [];
   let tempDate: string[] = [];
 
-  list.map((x) => {
+  useImperativeHandle(ref, () => ({
+    get date() {
+      return dateRef.current;
+    },
+    get language() {
+      return languageRef.current;
+    },
+  }));
+
+  props.list.map((x) => {
     if (!tempDate.includes(x.release_date.toString().substr(0, 4))) {
       tempDate.push(x.release_date.toString().substr(0, 4));
     }
   });
 
-  list.map((x) => {
+  props.list.map((x) => {
     if (!tempLanguage.includes(x.original_language)) {
       tempLanguage.push(x.original_language);
     }
@@ -35,9 +39,7 @@ const FloatingFilter: React.FC<Props> = ({
     <div className="filter">
       <button
         onClick={() => {
-          setDate("");
-          setLanguage("");
-          console.log("cleared filters");
+          props.clearFilter();
         }}
       >
         clear filter
@@ -45,9 +47,9 @@ const FloatingFilter: React.FC<Props> = ({
 
       <label htmlFor="language">Language:</label>
       <select
-        value={language}
-        onChange={(e) => {
-          setLanguage(e.target.value);
+        ref={languageRef}
+        onChange={() => {
+          props.changeHandler();
         }}
         id="language"
       >
@@ -55,11 +57,12 @@ const FloatingFilter: React.FC<Props> = ({
           <option value={x}>{x}</option>
         ))}
       </select>
+
       <label htmlFor="date"> Released after:</label>
       <select
-        value={date}
-        onChange={(e) => {
-          setDate(e.target.value);
+        ref={dateRef}
+        onChange={() => {
+          props.changeHandler();
         }}
         id="date"
       >
@@ -69,6 +72,6 @@ const FloatingFilter: React.FC<Props> = ({
       </select>
     </div>
   );
-};
+});
 
 export default FloatingFilter;
