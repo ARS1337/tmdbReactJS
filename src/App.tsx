@@ -5,6 +5,7 @@ import getData from "./components/fetchhh";
 import SearchBar from "./components/SearchBar";
 import { data } from "./utils/interfaces";
 import FloatingFilter from "./components/FloatingFilter";
+import { ThemeProvider, useTheme } from "./components/Theme";
 
 function App() {
   let temp1: data = {
@@ -97,15 +98,19 @@ function App() {
     console.log("cleared filters");
     console.log(inputRef.current.language.value, inputRef.current.date.value);
   };
+
   return (
     <div className="App">
-      <SearchBar
-        ref={searchRef}
-        searchMovies={() => {
-          if (searchRef.current != null)
-            searchMovies(searchRef.current.value, setList);
-        }}
-      />
+      <ThemeProvider>
+        <SearchBar
+          ref={searchRef}
+          searchMovies={() => {
+            if (searchRef.current != null)
+              searchMovies(searchRef.current.value, setList);
+          }}
+        />
+      </ThemeProvider>
+
       <MovieList list={temp} loading={loading} />
       <FloatingFilter
         list={list}

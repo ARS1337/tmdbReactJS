@@ -96,3 +96,13 @@ ul {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
+
+:root {
+  --background-color: #fefefe;
+  --color: #343434;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--color);
+}
